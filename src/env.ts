@@ -7,7 +7,7 @@ export const Env = {
   JSESSIONID: js ?? "",
   CSRF: js?.replace(/^"|"$/g, "") ?? "",
   PORT: process.env["PORT"] || "3000",
-  ENVIROMENT: process.env["ENV"],
+  ENVIRONMENT: process.env["ENV"],
 };
 
 

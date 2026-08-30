@@ -7,6 +7,15 @@ export interface Result {
     data: any;
 }
 
+const MAX_LOG_STATUS_TEXT_LENGTH = 120;
+
+const sanitizeStatusText = (statusText: string): string =>
+    statusText
+        .replace(/[\u0000-\u001F\u007F]/g, " ")
+        .replace(/\s+/g, " ")
+        .trim()
+        .slice(0, MAX_LOG_STATUS_TEXT_LENGTH) || "Unknown";
+
 export const fetchLinkedInProfile = async (username: string): Promise<Result> => {
     let result: Result = {
         status: 500,
@@ -42,14 +51,23 @@ export const fetchLinkedInProfile = async (username: string): Promise<Result> =>
         let data: any = null;
 
         if (status >= 300 && status < 400) {
-            const redirectLocation = response.headers.get("location");
-            logger.error({ status, redirectLocation }, `[LinkedIn Scraper] Redirect detected (${status}). Location: ${redirectLocation}`);
+            logger.error(
+                {
+                    status,
+                    statusText: sanitizeStatusText(response.statusText),
+                    hasLocationHeader: response.headers.has("location"),
+                },
+                `[LinkedIn Scraper] Redirect detected (${status})`
+            );
             success = false;
             status = 500;
         } else if (!response.ok) {
-            const errorText = await response.text().catch(() => "");
-            const message = `LinkedIn returned status ${status} ${response.statusText}`;
-            logger.error({ status, statusText: response.statusText, errorText }, `[LinkedIn Scraper] Error response from LinkedIn (${status}): ${message}`);
+            const statusText = sanitizeStatusText(response.statusText);
+            const message = `LinkedIn returned status ${status} ${statusText}`;
+            logger.error(
+                { status, statusText },
+                `[LinkedIn Scraper] Error response from LinkedIn (${status}): ${message}`
+            );
             success = false;
         } else {
             logger.info({ status, statusText: response.statusText }, `[LinkedIn Scraper] Status: ${response.status} ${response.statusText}`);
@@ -65,7 +83,7 @@ export const fetchLinkedInProfile = async (username: string): Promise<Result> =>
             data,
         };
     } catch (e: any) {
-        logger.error({ error: e }, "[LinkedIn Scraper] Fetch Exception");
+        logger.error({ err: e }, "[LinkedIn Scraper] Fetch Exception");
         result = {
             status: 500,
             success: false,
@@ -74,4 +92,3 @@ export const fetchLinkedInProfile = async (username: string): Promise<Result> =>
     }
     return result;
 };
-

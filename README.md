@@ -163,7 +163,7 @@ A successful request returns `200 OK`:
 
 `profilePicture` is either `null` or an object with `displayUrl` and `raw` properties. `backgroundPicture` is either `null` or an object with `displayUrl`. Empty arrays indicate that LinkedIn did not return data for that section.
 
-Invalid input returns `400`. A LinkedIn authentication, redirect, or upstream response problem returns an error response, normally `500` or `502`.
+Invalid input returns `400`. Upstream HTTP statuses are returned as-is. Redirects and fetch exceptions return `500`. Unsupported profile payloads return `502`.
 
 ## Approach
 
@@ -171,13 +171,8 @@ The service extracts the public identifier from the supplied URL, then makes an 
 
 Requests are protected with Helmet, assigned a request ID, and written to structured logs. Redirects are handled manually so authentication walls and checkpoints do not get followed as successful profile responses.
 
-## Deployment
-
-For the challenge requirement, deploy the built application to a public HTTPS service. Set `PORT`, `LI_AT`, and `JSESSION_ID` as encrypted environment variables on the host. Do not place session values in source control, frontend code, logs, or API responses.
-
 ## Known limitations
 
 - LinkedIn's internal endpoints and response shapes are not public, stable APIs and may change without notice.
-- Results depend on the authenticated account, the target profile's visibility, and the data LinkedIn returns; fields may be empty or omitted.
+- Results depend on the authenticated account, the target profile's visibility, and the data LinkedIn returns; normalized fields use `null`, empty strings, or empty arrays when data is unavailable.
 - Sessions can expire or trigger authentication, checkpoint, rate-limit, or redirect responses. This API reports those failures but does not renew sessions or bypass access controls.
-- The service currently has no pagination, persistence, caching, authentication, rate limiting, or automated tests.

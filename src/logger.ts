@@ -1,7 +1,7 @@
 import pino, { type LoggerOptions } from "pino";
 import { Env } from "./env.js";
 
-const isDev = Env.ENVIROMENT === "development";
+const isDev = Env.ENVIRONMENT === "development";
 
 const options: LoggerOptions = {
   level: process.env.LOG_LEVEL || "info",
