@@ -1,0 +1,4 @@
+dev-artifacts/
+.env
+node_modules
+dist/
