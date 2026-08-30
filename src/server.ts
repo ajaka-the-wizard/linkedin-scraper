@@ -4,11 +4,16 @@ import { Env, validateConfig } from "./env.js";
 import { fetchLinkedInProfile } from "./fetcher.js";
 import { parseLinkedInResponse } from "./parser.js";
 import { validateLinkedInUrl } from "./validator.js";
+import helmet from "helmet";
 
 validateConfig(Env)
 
 const port = Number(Env.PORT);
 const app = express();
+
+app.set("trust proxy", 1)
+
+app.use(helmet())
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
