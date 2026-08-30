@@ -132,8 +132,8 @@ npm start
 
 | Parameter | Type | In | Required | Description |
 | :--- | :--- | :--- | :--- | :--- |
-| `profile_url` / `url` | `string` | Query / Body | **Yes** | Full HTTPS LinkedIn profile URL |
-| `raw` | `boolean` | Query | No | If `true`, includes raw Voyager response in output |
+| `profile_url`| `string` | Query / Body | **Yes** | Full HTTPS LinkedIn profile URL |
+
 
 #### Example Request
 ```bash

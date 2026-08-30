@@ -1,9 +1,11 @@
 import "dotenv/config";
 import express from "express";
-import { Env } from "./env.js";
+import { Env, validateConfig } from "./env.js";
 import { fetchLinkedInProfile } from "./fetcher.js";
 import { parseLinkedInResponse } from "./parser.js";
 import { validateLinkedInUrl } from "./validator.js";
+
+validateConfig(Env)
 
 const port = Number(Env.PORT) || 3000;
 const app = express();
@@ -49,6 +51,13 @@ const handleProfileRequest = async (req: express.Request, res: express.Response)
     });
   }
   const parsedProfile = parseLinkedInResponse(data);
+
+  if (!parsedProfile) {
+    return res.status(502).json({
+      success: false,
+      message: "LinkedIn returned an unsupported profile payload",
+    })
+  }
   return res.status(200).json({
     success: true,
     data: parsedProfile,
@@ -57,6 +66,8 @@ const handleProfileRequest = async (req: express.Request, res: express.Response)
 
 app.get("/profile", handleProfileRequest);
 app.post("/profile", handleProfileRequest);
+
+
 
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);
