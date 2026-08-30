@@ -45,7 +45,7 @@ export const fetchLinkedInProfile = async (username: string): Promise<Result> =>
             redirect: "manual",
         });
 
-        const status = response.status;
+        let status = response.status;
         let success = false;
         let data: any = null;
 
@@ -53,6 +53,7 @@ export const fetchLinkedInProfile = async (username: string): Promise<Result> =>
             const redirectLocation = response.headers.get("location");
             console.error(`[LinkedIn Scraper] Redirect detected (${status}). Location: ${redirectLocation}`);
             success = false;
+            status = 500;
         } else if (!response.ok) {
             const errorText = await response.text().catch(() => "");
             const message = `LinkedIn returned status ${status} ${response.statusText}`;
