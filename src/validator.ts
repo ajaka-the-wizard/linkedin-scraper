@@ -1,18 +1,18 @@
-/**
- * URL Validation and Username Extraction for LinkedIn Profiles
- */
+import { logger } from "./logger.js";
 
 export interface ValidationResult {
-  valid: boolean
-  username?: string
-  message: string
+  valid: boolean;
+  username?: string;
+  message: string;
 }
 
 export function validateLinkedInUrl(rawUrl: unknown): ValidationResult {
   if (!rawUrl || typeof rawUrl !== "string" || !rawUrl.trim()) {
+    const message = "Profile URL is required and must be a non-empty string.";
+    logger.warn({ rawUrl }, message);
     return {
       valid: false,
-      message: "Profile URL is required and must be a non-empty string.",
+      message,
     };
   }
 
@@ -22,17 +22,21 @@ export function validateLinkedInUrl(rawUrl: unknown): ValidationResult {
   try {
     parsed = new URL(trimmed);
   } catch {
+    const message = "Malformed URL. Please provide a valid, well-formed URL.";
+    logger.warn({ url: trimmed }, message);
     return {
       valid: false,
-      message: "Malformed URL. Please provide a valid, well-formed URL."
+      message,
     };
   }
 
   // Enforce HTTPS
   if (parsed.protocol !== "https:") {
+    const message = "Invalid protocol. LinkedIn profile URL must use HTTPS (e.g., https://www.linkedin.com/in/<username>).";
+    logger.warn({ url: trimmed, protocol: parsed.protocol }, message);
     return {
       valid: false,
-      message: "Invalid protocol. LinkedIn profile URL must use HTTPS (e.g., https://www.linkedin.com/in/<username>).",
+      message,
     };
   }
 
@@ -43,9 +47,11 @@ export function validateLinkedInUrl(rawUrl: unknown): ValidationResult {
     hostname.endsWith(".linkedin.com");
 
   if (!isLinkedIn) {
+    const message = "Invalid domain. Profile URL must belong to linkedin.com.";
+    logger.warn({ url: trimmed, hostname }, message);
     return {
       valid: false,
-      message: "Invalid domain. Profile URL must belong to linkedin.com.",
+      message,
     };
   }
 
@@ -54,9 +60,11 @@ export function validateLinkedInUrl(rawUrl: unknown): ValidationResult {
   const segments = parsed.pathname.split("/").filter(Boolean);
 
   if (segments.length < 2 || segments[0]?.toLowerCase() !== "in") {
+    const message = "Invalid profile path. URL must follow the format 'https://www.linkedin.com/in/<username>'.";
+    logger.warn({ url: trimmed, pathname: parsed.pathname }, message);
     return {
       valid: false,
-      message: "https://www.linkedin.com/in/<username>'.",
+      message,
     };
   }
 
@@ -64,31 +72,37 @@ export function validateLinkedInUrl(rawUrl: unknown): ValidationResult {
   try {
     username = decodeURIComponent(segments[1]!).trim();
   } catch {
+    const message = "Malformed URL encoding in profile username.";
+    logger.warn({ url: trimmed, segment: segments[1] }, message);
     return {
       valid: false,
-      message: "Malformed URL encoding in profile username.",
+      message,
     };
   }
 
   if (!username) {
+    const message = "Username parameter in LinkedIn profile URL cannot be empty.";
+    logger.warn({ url: trimmed }, message);
     return {
       valid: false,
-      message: "Username parameter in LinkedIn profile URL cannot be empty.",
+      message,
     };
   }
 
   // Validate username format (alphanumeric, dashes, underscores, common localized chars)
   const usernameRegex = /^[\w\-À-ž%]+$/;
   if (!usernameRegex.test(username)) {
+    const message = "Malformed username in profile URL. Contains invalid characters.";
+    logger.warn({ url: trimmed, username }, message);
     return {
       valid: false,
-      message: "Malformed username in profile URL. Contains invalid characters.",
+      message,
     };
   }
 
   return {
     valid: true,
     username,
-    message: ""
+    message: "",
   };
 }

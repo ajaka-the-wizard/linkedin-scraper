@@ -1,0 +1,369 @@
+{
+  "data": {
+    "entityUrn": "urn:li:collectionResponse:synthetic-profile-response",
+    "paging": {
+      "count": 10,
+      "start": 0,
+      "links": []
+    },
+    "*elements": [
+      "urn:li:fsd_profile:synthetic-profile"
+    ],
+    "$type": "com.linkedin.restli.common.CollectionResponse"
+  },
+  "included": [
+    {
+      "paging": {
+        "total": 0,
+        "count": 20,
+        "start": 0,
+        "links": []
+      },
+      "entityUrn": "urn:li:collectionResponse:synthetic-certifications",
+      "$recipeTypes": [
+        "com.linkedin.voyager.dash.deco.identity.profile.FullProfileCertificationsInjection"
+      ],
+      "elements": [],
+      "$type": "com.linkedin.restli.common.CollectionResponse"
+    },
+    {
+      "paging": {
+        "total": 1,
+        "count": 10,
+        "start": 0,
+        "links": []
+      },
+      "*elements": [
+        "urn:li:fsd_profilePositionGroup:(synthetic-profile,synthetic-group)"
+      ],
+      "entityUrn": "urn:li:collectionResponse:synthetic-position-groups",
+      "$recipeTypes": [
+        "com.linkedin.voyager.dash.deco.identity.profile.FullProfilePositionGroupsInjection"
+      ],
+      "$type": "com.linkedin.restli.common.CollectionResponse"
+    },
+    {
+      "paging": {
+        "total": 0,
+        "count": 20,
+        "start": 0,
+        "links": []
+      },
+      "entityUrn": "urn:li:collectionResponse:synthetic-languages",
+      "$recipeTypes": [
+        "com.linkedin.voyager.dash.deco.identity.profile.FullProfileLanguagesInjection"
+      ],
+      "elements": [],
+      "$type": "com.linkedin.restli.common.CollectionResponse"
+    },
+    {
+      "paging": {
+        "total": 0,
+        "count": 20,
+        "start": 0,
+        "links": []
+      },
+      "entityUrn": "urn:li:collectionResponse:synthetic-publications",
+      "$recipeTypes": [
+        "com.linkedin.voyager.dash.deco.identity.profile.FullProfilePublicationsInjection"
+      ],
+      "elements": [],
+      "$type": "com.linkedin.restli.common.CollectionResponse"
+    },
+    {
+      "paging": {
+        "total": 1,
+        "count": 20,
+        "start": 0,
+        "links": []
+      },
+      "*elements": [
+        "urn:li:fsd_profileProject:(synthetic-profile,synthetic-project)"
+      ],
+      "entityUrn": "urn:li:collectionResponse:synthetic-projects",
+      "$recipeTypes": [
+        "com.linkedin.voyager.dash.deco.identity.profile.FullProfileProjectsInjection"
+      ],
+      "$type": "com.linkedin.restli.common.CollectionResponse"
+    },
+    {
+      "paging": {
+        "total": 1,
+        "count": 20,
+        "start": 0,
+        "links": []
+      },
+      "*elements": [
+        "urn:li:fsd_profilePosition:(synthetic-profile,synthetic-position)"
+      ],
+      "entityUrn": "urn:li:collectionResponse:synthetic-positions",
+      "$recipeTypes": [
+        "com.linkedin.voyager.dash.deco.identity.profile.FullProfilePositionsInGroup"
+      ],
+      "$type": "com.linkedin.restli.common.CollectionResponse"
+    },
+    {
+      "paging": {
+        "total": 2,
+        "count": 20,
+        "start": 0,
+        "links": []
+      },
+      "*elements": [
+        "urn:li:fsd_skill:(synthetic-profile,typescript)",
+        "urn:li:fsd_skill:(synthetic-profile,distributed-systems)"
+      ],
+      "entityUrn": "urn:li:collectionResponse:synthetic-skills",
+      "$recipeTypes": [
+        "com.linkedin.voyager.dash.deco.identity.profile.FullProfileSkillsInjection"
+      ],
+      "$type": "com.linkedin.restli.common.CollectionResponse"
+    },
+    {
+      "paging": {
+        "total": 1,
+        "count": 20,
+        "start": 0,
+        "links": []
+      },
+      "*elements": [
+        "urn:li:fsd_profileEducation:(synthetic-profile,synthetic-education)"
+      ],
+      "entityUrn": "urn:li:collectionResponse:synthetic-educations",
+      "$recipeTypes": [
+        "com.linkedin.voyager.dash.deco.identity.profile.FullProfileEducationsInjection"
+      ],
+      "$type": "com.linkedin.restli.common.CollectionResponse"
+    },
+    {
+      "paging": {
+        "total": 0,
+        "count": 20,
+        "start": 0,
+        "links": []
+      },
+      "entityUrn": "urn:li:collectionResponse:synthetic-volunteer-experiences",
+      "$recipeTypes": [
+        "com.linkedin.voyager.dash.deco.identity.profile.FullProfileVolunteerExperiencesInjection"
+      ],
+      "elements": [],
+      "$type": "com.linkedin.restli.common.CollectionResponse"
+    },
+    {
+      "entityUrn": "urn:li:fsd_geo:synthetic-city",
+      "defaultLocalizedName": "Example City",
+      "countryCode": "US",
+      "$type": "com.linkedin.voyager.dash.common.Geo"
+    },
+    {
+      "entityUrn": "urn:li:fsd_industry:synthetic-industry",
+      "name": "Software Development",
+      "$type": "com.linkedin.voyager.dash.common.Industry"
+    },
+    {
+      "entityUrn": "urn:li:fsd_company:synthetic-company",
+      "name": "Example Company",
+      "url": "https://www.linkedin.com/company/example-company/",
+      "$type": "com.linkedin.voyager.dash.organization.Company"
+    },
+    {
+      "entityUrn": "urn:li:fsd_memberRelationship:synthetic-profile",
+      "$type": "com.linkedin.voyager.dash.relationships.MemberRelationship"
+    },
+    {
+      "entityUrn": "urn:li:fsd_profilePositionGroup:(synthetic-profile,synthetic-group)",
+      "companyName": "Example Company",
+      "companyUrn": "urn:li:fsd_company:synthetic-company",
+      "profilePositionInGroupUrns": [
+        "urn:li:fsd_profilePosition:(synthetic-profile,synthetic-position)"
+      ],
+      "$type": "com.linkedin.voyager.dash.identity.profile.PositionGroup"
+    },
+    {
+      "entityUrn": "urn:li:fsd_profilePosition:(synthetic-profile,synthetic-position)",
+      "title": "Software Engineer",
+      "multiLocaleTitle": {
+        "en_US": "Software Engineer"
+      },
+      "companyName": "Example Company",
+      "multiLocaleCompanyName": {
+        "en_US": "Example Company"
+      },
+      "companyUrn": "urn:li:fsd_company:synthetic-company",
+      "*company": "urn:li:fsd_company:synthetic-company",
+      "locationName": "Example City, United States",
+      "description": "Built and maintained backend services for an example product.",
+      "multiLocaleDescription": {
+        "en_US": "Built and maintained backend services for an example product."
+      },
+      "dateRange": {
+        "start": {
+          "month": 6,
+          "year": 2024,
+          "$type": "com.linkedin.common.Date"
+        },
+        "$type": "com.linkedin.common.DateRange"
+      },
+      "$recipeTypes": [
+        "com.linkedin.voyager.dash.deco.identity.profile.FullProfilePosition"
+      ],
+      "$type": "com.linkedin.voyager.dash.identity.profile.Position"
+    },
+    {
+      "entityUrn": "urn:li:fsd_profileEducation:(synthetic-profile,synthetic-education)",
+      "schoolName": "Example University",
+      "multiLocaleSchoolName": {
+        "en_US": "Example University"
+      },
+      "schoolUrn": "urn:li:fsd_company:synthetic-school",
+      "degreeName": "Bachelor of Science",
+      "multiLocaleDegreeName": {
+        "en_US": "Bachelor of Science"
+      },
+      "fieldOfStudy": "Computer Science",
+      "multiLocaleFieldOfStudy": {
+        "en_US": "Computer Science"
+      },
+      "grade": null,
+      "activities": null,
+      "description": "A synthetic education record used only for parser development.",
+      "multiLocaleDescription": {
+        "en_US": "A synthetic education record used only for parser development."
+      },
+      "dateRange": {
+        "start": {
+          "month": 9,
+          "year": 2018,
+          "$type": "com.linkedin.common.Date"
+        },
+        "end": {
+          "month": 6,
+          "year": 2022,
+          "$type": "com.linkedin.common.Date"
+        },
+        "$type": "com.linkedin.common.DateRange"
+      },
+      "$recipeTypes": [
+        "com.linkedin.voyager.dash.deco.identity.profile.FullProfileEducation"
+      ],
+      "$type": "com.linkedin.voyager.dash.identity.profile.Education"
+    },
+    {
+      "entityUrn": "urn:li:fsd_skill:(synthetic-profile,typescript)",
+      "name": "TypeScript",
+      "multiLocaleName": {
+        "en_US": "TypeScript"
+      },
+      "$type": "com.linkedin.voyager.dash.identity.profile.Skill"
+    },
+    {
+      "entityUrn": "urn:li:fsd_skill:(synthetic-profile,distributed-systems)",
+      "name": "Distributed Systems",
+      "multiLocaleName": {
+        "en_US": "Distributed Systems"
+      },
+      "$type": "com.linkedin.voyager.dash.identity.profile.Skill"
+    },
+    {
+      "entityUrn": "urn:li:fsd_profileProject:(synthetic-profile,synthetic-project)",
+      "title": "Example Task Scheduler",
+      "multiLocaleTitle": {
+        "en_US": "Example Task Scheduler"
+      },
+      "description": "A synthetic project record used only for parser development.",
+      "multiLocaleDescription": {
+        "en_US": "A synthetic project record used only for parser development."
+      },
+      "url": "https://example.test/projects/task-scheduler",
+      "dateRange": {
+        "start": {
+          "month": 11,
+          "year": 2023,
+          "$type": "com.linkedin.common.Date"
+        },
+        "end": {
+          "month": 2,
+          "year": 2024,
+          "$type": "com.linkedin.common.Date"
+        },
+        "$type": "com.linkedin.common.DateRange"
+      },
+      "contributors": [
+        {
+          "standardizedContributor": {
+            "profileUrn": "urn:li:fsd_profile:synthetic-profile",
+            "*profile": "urn:li:fsd_profile:synthetic-profile",
+            "$type": "com.linkedin.voyager.dash.identity.profile.StandardizedContributor"
+          }
+        }
+      ],
+      "$recipeTypes": [
+        "com.linkedin.voyager.dash.deco.identity.profile.FullProfileProject"
+      ],
+      "$type": "com.linkedin.voyager.dash.identity.profile.Project"
+    },
+    {
+      "entityUrn": "urn:li:fsd_profile:synthetic-profile",
+      "objectUrn": "urn:li:member:synthetic-member",
+      "publicIdentifier": "jane-doe",
+      "firstName": "Jane",
+      "lastName": "Doe",
+      "multiLocaleFirstName": {
+        "en_US": "Jane"
+      },
+      "multiLocaleLastName": {
+        "en_US": "Doe"
+      },
+      "headline": "Software Engineer",
+      "multiLocaleHeadline": {
+        "en_US": "Software Engineer"
+      },
+      "summary": "A synthetic profile summary used only for parser development.",
+      "multiLocaleSummary": {
+        "en_US": "A synthetic profile summary used only for parser development."
+      },
+      "geoLocation": {
+        "geoUrn": "urn:li:fsd_geo:synthetic-city",
+        "*geo": "urn:li:fsd_geo:synthetic-city",
+        "$type": "com.linkedin.voyager.dash.identity.profile.ProfileGeoLocation"
+      },
+      "location": {
+        "countryCode": "US",
+        "$type": "com.linkedin.voyager.dash.identity.profile.ProfileLocation"
+      },
+      "locationName": null,
+      "profilePicture": {
+        "a11yText": "Jane Doe",
+        "$type": "com.linkedin.voyager.dash.identity.profile.PhotoFilterPicture"
+      },
+      "backgroundPicture": null,
+      "*profilePositionGroups": "urn:li:collectionResponse:synthetic-position-groups",
+      "*profileCertifications": "urn:li:collectionResponse:synthetic-certifications",
+      "*profileLanguages": "urn:li:collectionResponse:synthetic-languages",
+      "*profileProjects": "urn:li:collectionResponse:synthetic-projects",
+      "*profileSkills": "urn:li:collectionResponse:synthetic-skills",
+      "*profileEducations": "urn:li:collectionResponse:synthetic-educations",
+      "*profileVolunteerExperiences": "urn:li:collectionResponse:synthetic-volunteer-experiences",
+      "*profilePublications": "urn:li:collectionResponse:synthetic-publications",
+      "*industry": "urn:li:fsd_industry:synthetic-industry",
+      "industryUrn": "urn:li:fsd_industry:synthetic-industry",
+      "*memberRelationship": "urn:li:fsd_memberRelationship:synthetic-profile",
+      "supportedLocales": [
+        {
+          "country": "US",
+          "language": "en",
+          "$type": "com.linkedin.common.Locale"
+        }
+      ],
+      "primaryLocale": {
+        "country": "US",
+        "language": "en",
+        "$type": "com.linkedin.common.Locale"
+      },
+      "$recipeTypes": [
+        "com.linkedin.voyager.dash.deco.identity.profile.FullProfileWithEntities"
+      ],
+      "$type": "com.linkedin.voyager.dash.identity.profile.Profile"
+    }
+  ]
+}

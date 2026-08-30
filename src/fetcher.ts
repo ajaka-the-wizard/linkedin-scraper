@@ -1,13 +1,5 @@
 import { Env } from "./env.js";
-
-// export const extractUsername = (url: string): string => {
-//   const cleaned = url.replace(/\/+$/, "");
-//   const match = cleaned.match(/\/in\/([^/?#]+)/);
-//   if (!match) {
-//     throw new Error(`Invalid LinkedIn profile URL: ${url}`);
-//   }
-//   return match[1]!;
-// };
+import { logger } from "./logger.js";
 
 export interface Result {
     status: number;
@@ -21,7 +13,7 @@ export const fetchLinkedInProfile = async (username: string): Promise<Result> =>
         success: false,
         data: null,
     };
-    console.log(`[LinkedIn Scraper] Fetching profile for username: "${username}"...`);
+    logger.info({ username }, `[LinkedIn Scraper] Fetching profile for username: "${username}"...`);
 
     const apiUrl = `https://www.linkedin.com/voyager/api/identity/dash/profiles?q=memberIdentity&memberIdentity=${encodeURIComponent(
         username
@@ -51,21 +43,20 @@ export const fetchLinkedInProfile = async (username: string): Promise<Result> =>
 
         if (status >= 300 && status < 400) {
             const redirectLocation = response.headers.get("location");
-            console.error(`[LinkedIn Scraper] Redirect detected (${status}). Location: ${redirectLocation}`);
+            logger.error({ status, redirectLocation }, `[LinkedIn Scraper] Redirect detected (${status}). Location: ${redirectLocation}`);
             success = false;
             status = 500;
         } else if (!response.ok) {
             const errorText = await response.text().catch(() => "");
             const message = `LinkedIn returned status ${status} ${response.statusText}`;
-            console.error(message);
-            console.error(`[LinkedIn Scraper] Error response from LinkedIn (${status}):`, errorText);
+            logger.error({ status, statusText: response.statusText, errorText }, `[LinkedIn Scraper] Error response from LinkedIn (${status}): ${message}`);
             success = false;
         } else {
-            console.log(`[LinkedIn Scraper] Status: ${response.status} ${response.statusText}`);
+            logger.info({ status, statusText: response.statusText }, `[LinkedIn Scraper] Status: ${response.status} ${response.statusText}`);
             const rawText = await response.text();
             data = JSON.parse(rawText);
             success = true;
-            console.log("[LinkedIn Scraper] Response received successfully!");
+            logger.info({ username }, "[LinkedIn Scraper] Response received successfully!");
         }
 
         result = {
@@ -74,7 +65,7 @@ export const fetchLinkedInProfile = async (username: string): Promise<Result> =>
             data,
         };
     } catch (e: any) {
-        console.error("[LinkedIn Scraper] Fetch Exception:", e);
+        logger.error({ error: e }, "[LinkedIn Scraper] Fetch Exception");
         result = {
             status: 500,
             success: false,

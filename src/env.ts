@@ -6,7 +6,8 @@ export const Env = {
   LIAT: process.env["LI_AT"] || "",
   JSESSIONID: js ?? "",
   CSRF: js?.replace(/^"|"$/g, "") ?? "",
-  PORT: process.env["PORT"] || "3000"
+  PORT: process.env["PORT"] || "3000",
+  ENVIROMENT: process.env["ENV"],
 };
 
 
