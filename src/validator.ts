@@ -60,7 +60,15 @@ export function validateLinkedInUrl(rawUrl: unknown): ValidationResult {
     };
   }
 
-  const username = decodeURIComponent(segments[1]!).trim();
+  let username: string;
+  try {
+    username = decodeURIComponent(segments[1]!).trim();
+  } catch {
+    return {
+      valid: false,
+      message: "Malformed URL encoding in profile username.",
+    };
+  }
 
   if (!username) {
     return {
