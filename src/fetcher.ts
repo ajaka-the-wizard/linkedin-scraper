@@ -1,13 +1,5 @@
 import { Env } from "./env.js";
-
-// export const extractUsername = (url: string): string => {
-//   const cleaned = url.replace(/\/+$/, "");
-//   const match = cleaned.match(/\/in\/([^/?#]+)/);
-//   if (!match) {
-//     throw new Error(`Invalid LinkedIn profile URL: ${url}`);
-//   }
-//   return match[1]!;
-// };
+import { logger } from "./logger.js";
 
 export interface Result {
     status: number;
@@ -15,13 +7,22 @@ export interface Result {
     data: any;
 }
 
+const MAX_LOG_STATUS_TEXT_LENGTH = 120;
+
+const sanitizeStatusText = (statusText: string): string =>
+    statusText
+        .replace(/[\u0000-\u001F\u007F]/g, " ")
+        .replace(/\s+/g, " ")
+        .trim()
+        .slice(0, MAX_LOG_STATUS_TEXT_LENGTH) || "Unknown";
+
 export const fetchLinkedInProfile = async (username: string): Promise<Result> => {
     let result: Result = {
         status: 500,
         success: false,
         data: null,
     };
-    console.log(`[LinkedIn Scraper] Fetching profile for username: "${username}"...`);
+    logger.info({ username }, `[LinkedIn Scraper] Fetching profile for username: "${username}"...`);
 
     const apiUrl = `https://www.linkedin.com/voyager/api/identity/dash/profiles?q=memberIdentity&memberIdentity=${encodeURIComponent(
         username
@@ -50,22 +51,30 @@ export const fetchLinkedInProfile = async (username: string): Promise<Result> =>
         let data: any = null;
 
         if (status >= 300 && status < 400) {
-            const redirectLocation = response.headers.get("location");
-            console.error(`[LinkedIn Scraper] Redirect detected (${status}). Location: ${redirectLocation}`);
+            logger.error(
+                {
+                    status,
+                    statusText: sanitizeStatusText(response.statusText),
+                    hasLocationHeader: response.headers.has("location"),
+                },
+                `[LinkedIn Scraper] Redirect detected (${status})`
+            );
             success = false;
             status = 500;
         } else if (!response.ok) {
-            const errorText = await response.text().catch(() => "");
-            const message = `LinkedIn returned status ${status} ${response.statusText}`;
-            console.error(message);
-            console.error(`[LinkedIn Scraper] Error response from LinkedIn (${status}):`, errorText);
+            const statusText = sanitizeStatusText(response.statusText);
+            const message = `LinkedIn returned status ${status} ${statusText}`;
+            logger.error(
+                { status, statusText },
+                `[LinkedIn Scraper] Error response from LinkedIn (${status}): ${message}`
+            );
             success = false;
         } else {
-            console.log(`[LinkedIn Scraper] Status: ${response.status} ${response.statusText}`);
+            logger.info({ status, statusText: response.statusText }, `[LinkedIn Scraper] Status: ${response.status} ${response.statusText}`);
             const rawText = await response.text();
             data = JSON.parse(rawText);
             success = true;
-            console.log("[LinkedIn Scraper] Response received successfully!");
+            logger.info({ username }, "[LinkedIn Scraper] Response received successfully!");
         }
 
         result = {
@@ -74,7 +83,7 @@ export const fetchLinkedInProfile = async (username: string): Promise<Result> =>
             data,
         };
     } catch (e: any) {
-        console.error("[LinkedIn Scraper] Fetch Exception:", e);
+        logger.error({ err: e }, "[LinkedIn Scraper] Fetch Exception");
         result = {
             status: 500,
             success: false,
@@ -83,4 +92,3 @@ export const fetchLinkedInProfile = async (username: string): Promise<Result> =>
     }
     return result;
 };
-

@@ -4,16 +4,20 @@ import { Env, validateConfig } from "./env.js";
 import { fetchLinkedInProfile } from "./fetcher.js";
 import { parseLinkedInResponse } from "./parser.js";
 import { validateLinkedInUrl } from "./validator.js";
+import { requestIdMiddleware, requestLoggerMiddleware } from "./middleware.js";
+import { logger } from "./logger.js";
 import helmet from "helmet";
 
-validateConfig(Env)
+validateConfig(Env);
 
 const port = Number(Env.PORT);
 const app = express();
 
-app.set("trust proxy", 1)
+app.set("trust proxy", 1);
 
-app.use(helmet())
+app.use(helmet());
+app.use(requestIdMiddleware);
+app.use(requestLoggerMiddleware);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -24,7 +28,7 @@ app.get("/", (_req, res) => {
     name: "LinkedIn Profile Scraper API",
     status: "healthy",
     endpoints: {
-      profile: "/profile?url=https://www.linkedin.com/in/<username>",
+      profile: "/profile?profile_url=https://www.linkedin.com/in/<username>",
     },
   });
 });
@@ -38,7 +42,7 @@ const handleProfileRequest = async (req: express.Request, res: express.Response)
   if (!profileUrl) {
     return res.status(400).json({
       success: false,
-      message: "Missing LinkedIn profile URL. Provide via ?url=... query parameter or JSON body { profile_url: ... }",
+      message: "Missing LinkedIn profile URL. Provide via ?profile_url=... query parameter or JSON body { profile_url: ... }",
     });
   }
 
@@ -84,9 +88,8 @@ app.post("/profile", handleProfileRequest);
 
 
 app.listen(port, () => {
-  console.log(`Server started on port ${port}`);
+  logger.info(`Server started on port ${port}`);
 });
-
 
 
 
