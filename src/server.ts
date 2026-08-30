@@ -7,7 +7,7 @@ import { validateLinkedInUrl } from "./validator.js";
 
 validateConfig(Env)
 
-const port = Number(Env.PORT) || 3000;
+const port = Number(Env.PORT);
 const app = express();
 
 app.use(express.json());
@@ -43,21 +43,30 @@ const handleProfileRequest = async (req: express.Request, res: express.Response)
   }
 
   const { status, success, data } = await fetchLinkedInProfile(username);
-  message = success ? "Successfully fetched profile" : "Failed to fetch profile from LinkedIn"
-  if (!success || !data) {
+
+  if (!success) {
     return res.status(status).json({
-      success,
-      message
+      success: false,
+      message: "Failed to fetch profile from LinkedIn",
     });
   }
+
+  if (!data) {
+    return res.status(502).json({
+      success: false,
+      message: "LinkedIn returned an unsupported profile payload",
+    });
+  }
+
   const parsedProfile = parseLinkedInResponse(data);
 
   if (!parsedProfile) {
     return res.status(502).json({
       success: false,
       message: "LinkedIn returned an unsupported profile payload",
-    })
+    });
   }
+
   return res.status(200).json({
     success: true,
     data: parsedProfile,
